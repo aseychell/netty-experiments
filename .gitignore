@@ -1,0 +1,10 @@
+target/
+target-ide/
+bin/
+*.settings/
+*.iml
+*.idea
+*.classpath
+*.project
+*.tar
+
