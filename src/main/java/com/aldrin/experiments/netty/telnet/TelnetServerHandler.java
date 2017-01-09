@@ -1,4 +1,4 @@
-package com.aldrin.examples.netty.telnet;
+package com.aldrin.experiments.netty.telnet;
 
 import java.net.InetAddress;
 import java.util.Date;

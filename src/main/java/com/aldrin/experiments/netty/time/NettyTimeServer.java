@@ -1,30 +1,23 @@
-package com.aldrin.examples.netty.telnet;
+package com.aldrin.experiments.netty.time;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.WriteBufferWaterMark;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
 /**
  * @author <a href="mailto:aldrin.seychell@ixaris.com">aldrin.seychell</a>
  */
-public class NettyTelnetServer {
-    
-    private static final StringDecoder DECODER = new StringDecoder();
-    private static final StringEncoder ENCODER = new StringEncoder();
-    
+public class NettyTimeServer {
+
     private final int port;
-    
-    public NettyTelnetServer(final int port) {
+
+    public NettyTimeServer(final int port) {
         this.port = port;
     }
     
@@ -40,20 +33,17 @@ public class NettyTelnetServer {
                     
                     @Override
                     protected void initChannel(final SocketChannel ch) throws Exception {
-                        // ch.pipeline().addLast(new DiscardServerHandler());
-                        final ChannelPipeline pipeline = ch.pipeline();
-
-                        pipeline.addLast("delimiter", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
-                        pipeline.addLast(DECODER);
-                        pipeline.addLast(ENCODER);
-                        pipeline.addLast("telnet", new TelnetServerHandler());
+                         ch.pipeline().addLast(new TimeServerHandler());
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
-            
+
+
+            b.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(8 * 1024,32 * 1024));
+
             final ChannelFuture f = b.bind(port).sync();
-            
+            f.addListener(future -> System.out.println("Server started!"));
             f.channel().closeFuture().sync();
         } finally {
             workerGroup.shutdownGracefully();
@@ -69,7 +59,7 @@ public class NettyTelnetServer {
         } else {
             port = 8080;
         }
-        new NettyTelnetServer(port).run();
+        new NettyTimeServer(port).run();
     }
     
 }

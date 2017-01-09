@@ -1,4 +1,4 @@
-package com.aldrin.examples.netty.discard;
+package com.aldrin.experiments.netty.discard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

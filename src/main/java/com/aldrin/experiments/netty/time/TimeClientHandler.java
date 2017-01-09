@@ -1,4 +1,4 @@
-package com.aldrin.examples.netty.time;
+package com.aldrin.experiments.netty.time;
 
 import java.util.Date;
 

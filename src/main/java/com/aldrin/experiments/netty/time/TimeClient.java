@@ -1,4 +1,4 @@
-package com.aldrin.examples.netty.time;
+package com.aldrin.experiments.netty.time;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
